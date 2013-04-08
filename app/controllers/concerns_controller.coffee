@@ -3,6 +3,8 @@ CurrentConcernController = require 'controllers/current_concern_controller'
 OldConcernController     = require 'controllers/old_concern_controller'
 
 class ConcernsController extends Spine.Controller
+  className: 'controller'
+
   elements:
     'form#new-concern': 'form'
     '#current-concerns': 'currentConcerns'
@@ -39,6 +41,5 @@ class ConcernsController extends Spine.Controller
       @form[0].reset()
 
     concern.fromForm(@form).save()
-
 
 module.exports = ConcernsController
