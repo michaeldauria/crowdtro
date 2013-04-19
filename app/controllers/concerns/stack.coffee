@@ -13,8 +13,8 @@ class Stack extends Spine.Stack
   default: 'show'
 
   constructor: (options) ->
-    @routes["concerns-#{ options.concern.cid }-show"] = 'show'
-    @routes["concerns-#{ options.concern.cid }-edit"] = 'edit'
+    @routes["concerns-#{ options.cid }-show"] = 'show'
+    @routes["concerns-#{ options.cid }-edit"] = 'edit'
 
     super
 

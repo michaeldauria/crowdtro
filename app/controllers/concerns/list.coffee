@@ -12,9 +12,9 @@ class List extends Spine.Controller
     Concern.bind "concern:#{@type}", @renderOne
 
   renderAll: =>
-    @renderOne(concern) for concern in Concern[@type]()
+    @renderOne(concern.cid) for concern in Concern[@type]()
 
-  renderOne: (concern) =>
-    @append new Item(concern: concern)
+  renderOne: (cid) =>
+    @append new Item(cid: cid)
 
 module.exports = List

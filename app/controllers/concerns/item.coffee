@@ -7,20 +7,21 @@ class Item extends Spine.Controller
 
   constructor: ->
     super
-    @append new Stack(concern: @concern)
-    @append new Navigation(concern: @concern)
+    @append new Stack(cid: @cid)
+    @append new Navigation(cid: @cid)
 
-    @concern.bind 'unbind remove', => @release()
+    Concern.bind "delete/#{@cid}", @release
 
-    @setId @concern.id
+    concern = Concern.findCID @cid
+    @setId concern.id
 
-    @el.attr('cid', "concern-#{ @concern.cid }")
+    @el.attr('cid', "concern-#{ @cid }")
 
-    unless @concern.isPersisted()
-      Concern.bind 'ajaxSuccess', (_, concern) =>
-        @concern = Concern.findCID @concern.cid
-        @setId(@concern.id)
-        Concern.unbind 'ajaxSuccess' if @concern.isPersisted()
+    unless concern.isPersisted()
+      Concern.bind 'ajaxSuccess', =>
+        concern = Concern.findCID @cid
+        @setId(concern.id)
+        Concern.unbind 'ajaxSuccess' if concern.isPersisted()
 
   setId: (id) => @el.attr('id', "concern-#{ id }")
 

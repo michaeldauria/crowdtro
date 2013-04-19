@@ -11,35 +11,33 @@ class Navigation extends Spine.Controller
 
   constructor: ->
     super
-    @html(require('views/concerns/navigation')(@concern))
+    @html(require('views/concerns/navigation')(Concern.findCID(@cid)))
 
-    unless @concern.isPersisted()
-      @concern.bind 'ajaxSuccess', =>
-        @concern = Concern.findCID @concern.cid
+  edit: (e) =>
+    e.preventDefault()
+    @navigate("concerns-#{ @cid }-edit", shim: true)
 
-  edit: (event) =>
-    event.preventDefault()
-    @navigate("concerns-#{ @concern.cid }-edit", shim: true)
+  destroy: (e) =>
+    e.preventDefault()
+    Concern.findCID(@cid).destroy()
+    Concern.trigger "delete/#{@cid}"
 
-  destroy: (event) =>
-    event.preventDefault()
-    @concern.destroy()
+  complete: (e) =>
+    e.preventDefault()
+    concern = Concern.findCID @cid
+    concern.complete = true
+    @save(concern)
 
-  complete: (event) =>
-    event.preventDefault()
-    @concern.complete = true
-    @save()
+  pending: (e) =>
+    e.preventDefault()
+    concern = Concern.findCID @cid
+    concern.complete = false
+    @save(concern)
 
-  pending: (event) =>
-    event.preventDefault()
-    @concern.complete = false
-    @save()
+  save: (concern) =>
+    concern.bind 'save', =>
+      Concern.trigger("concern:#{ concern.state() }", concern.cid)
 
-  save: =>
-    @concern.bind 'save', =>
-      @concern.trigger 'remove'
-      Concern.trigger("concern:#{ @concern.state() }", @concern)
-
-    @concern.save()
+    concern.save()
 
 module.exports = Navigation
