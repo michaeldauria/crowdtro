@@ -2,6 +2,7 @@ homes        = require('../routes/homes')
 concern      = require('../routes/concern')
 me           = require('../routes/me')
 spine        = require('../routes/spine')
+angular      = require('../routes/angular')
 authenticate = require('../routes/middleware').authenticate
 passport     = require('./passport')
 
@@ -34,3 +35,5 @@ module.exports = (app) ->
 
   app.get '/crowdtro.css', spine.css
   app.get '/crowdtro.js',  spine.js
+
+  app.get '/v2/crowdtro.js',  angular.js
