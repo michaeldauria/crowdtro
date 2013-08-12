@@ -16,6 +16,19 @@
   </head>
   <body ng-controller='CrowdtroCtrl'>
 
+    <div ng-repeat='concern in concerns | filter:{complete:false}'>
+      <div>
+        {{concern.content}} @ {{concern.score}}
+        <br/>
+        <a href='#' ng-click='completeConcern(concern)'>Done</a>
+        <a href='#' ng-click='trashConcern($index)'>Trash</a>
+        <a href='#' ng-click='downVote(concern)'>---</a>
+        <a href='#' ng-click='upVote(concern)'>+++</a>
+      </div>
+    </div>
+
+    <hr>
+
     <div>
       <form>
         <textarea ng-model='newConcern.content'> </textarea>
@@ -23,8 +36,17 @@
       </form>
     </div>
 
-    <div ng-repeat='concern in concerns'>
-      {{concern.content}}
+    <hr>
+
+    <div ng-repeat='concern in concerns | filter:{complete:true}'>
+      <div>
+        {{concern.content}} @ {{concern.score}}
+        <br/>
+        <a href='#' ng-click='resurrectConcern(concern)'>JK</a>
+        <a href='#' ng-click='trashConcern($index)'>Trash</a>
+        <a href='#' ng-click='downVote(concern)'>---</a>
+        <a href='#' ng-click='upVote(concern)'>+++</a>
+      </div>
     </div>
 
   </body>
