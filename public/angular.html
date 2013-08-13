@@ -9,7 +9,6 @@
     <script src='/javascripts/jquery.min.js' type='text/javascript' charset='utf-8'></script>
     <script src='/javascripts/bootstrap.min.js' type='text/javascript' charset='utf-8'></script>
 
-
     <script src='/javascripts/angular.js' type='text/javascript' charset='utf-8'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js'></script>
     <script src='/v2/crowdtro.js' type='text/javascript' charset='utf-8'></script>
@@ -19,11 +18,16 @@
     <div ng-repeat='concern in concerns | filter:{complete:false}'>
       <div>
         {{concern.content}} @ {{concern.score}}
-        <br/>
-        <a href='#' ng-click='completeConcern(concern)'>Done</a>
-        <a href='#' ng-click='trashConcern($index)'>Trash</a>
-        <a href='#' ng-click='downVote(concern)'>---</a>
-        <a href='#' ng-click='upVote(concern)'>+++</a>
+        <div class='btn-toolbar'>
+          <div class='btn-group'>
+            <a class='btn btn-mini' href='#' ng-click='completeConcern(concern)'><i class='icon-ok'></i></a>
+            <a class='btn btn-mini' href='#' ng-click='trashConcern($index)'><i class='icon-trash'></i></a>
+          </div>
+          <div class='btn-group'>
+            <a class='btn btn-mini' href='#' ng-click='downVote(concern)'><i class='icon-minus'></i></a>
+            <a class='btn btn-mini' href='#' ng-click='upVote(concern)'><i class='icon-plus'></i></a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -42,10 +46,16 @@
       <div>
         {{concern.content}} @ {{concern.score}}
         <br/>
-        <a href='#' ng-click='resurrectConcern(concern)'>JK</a>
-        <a href='#' ng-click='trashConcern($index)'>Trash</a>
-        <a href='#' ng-click='downVote(concern)'>---</a>
-        <a href='#' ng-click='upVote(concern)'>+++</a>
+        <div class='btn-toolbar'>
+          <div class='btn-group'>
+            <a class='btn btn-mini' href='#' ng-click='resurrectConcern(concern)'><i class='icon-ok'></i></a>
+            <a class='btn btn-mini' href='#' ng-click='trashConcern($index)'><i class='icon-trash'></i></a>
+          </div>
+          <div class='btn-group'>
+            <a class='btn btn-mini' href='#' ng-click='downVote(concern)'><i class='icon-minus'></i></a>
+            <a class='btn btn-mini' href='#' ng-click='upVote(concern)'><i class='icon-plus'></i></a>
+          </div>
+        </div>
       </div>
     </div>
 
