@@ -29,6 +29,7 @@ module.exports = (app) ->
   app.get '/me', me.show
 
   app.get    '/concerns',     concern.index
+  app.get    '/concerns/:id', concern.show
   app.post   '/concerns',     concern.create
   app.put    '/concerns/:id', concern.update
   app.delete '/concerns/:id', concern.delete

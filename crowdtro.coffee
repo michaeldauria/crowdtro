@@ -1,15 +1,4 @@
 app = angular.module('crowdtro', ['ngResource'])
-  .config ['$routeProvider', ($routeProvider) ->
-    $routeProvider
-      .when '/',         templateUrl: 'angular.html',   controller: PhoneListCtrl
-      .when '/edit/:id', templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl
-      .otherwise redirectTo: '/phones'
-    ]
-
-
-
-
-
 
 app.controller 'CrowdtroCtrl', ($scope, Concern) ->
   $scope.newConcern = { content: 'what' }
