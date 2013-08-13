@@ -9,67 +9,111 @@
     <script src='/javascripts/jquery.min.js' type='text/javascript' charset='utf-8'></script>
     <script src='/javascripts/bootstrap.min.js' type='text/javascript' charset='utf-8'></script>
 
-    <script src='/javascripts/angular.js' type='text/javascript' charset='utf-8'></script>
-    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js' type='text/javascript' charset='utf-8'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-resource.min.js' type='text/javascript' charset='utf-8'></script>
 
     <script src='/v2/crowdtro.js' type='text/javascript' charset='utf-8'></script>
+
+    <script type='text/ng-template' id='concern'>
+      <div ng-init='current.editing=false'>
+
+        <div class='row-fluid' ng-show='current.editing'>
+          <form ng-submit='current.editing=false'>
+            <textarea rows='1' name='content' class='input-xxlarge' ng-model='concern.content' ng-keydown='checkSubmit($event, concern, current)'>
+            </textarea>
+          </form>
+        </div>
+
+        <div class='row-fluid' ng-dblclick='current.editing=true'ng-hide='current.editing' >
+          {{concern.score}} / {{concern.content}}
+        </div>
+
+        <div class='row-fluid' ng-switch='concern.complete'>
+
+          <div class='btn-toolbar' ng-switch-when='true'>
+            <div class='btn-group'>
+              <a class='btn btn-mini' href='#' ng-click='resurrectConcern(concern)'>
+                <i class='icon-remove'></i>
+              </a>
+            </div>
+            <div class='btn-group'>
+              <a class='btn btn-mini' href='#' ng-click='trashConcern($index)'>
+                <i class='icon-trash'></i>
+              </a>
+            </div>
+          </div>
+
+          <div class='btn-toolbar' ng-switch-when='false'>
+            <div class='btn-group'>
+              <a class='btn btn-mini' href='#' ng-click='completeConcern(concern)'>
+                <i class='icon-ok'></i>
+              </a>
+            </div>
+            <div class='btn-group'>
+              <a class='btn btn-mini' href='#' ng-click='current.editing=true'>
+                <i class='icon-edit'></i>
+              </a>
+              <a class='btn btn-mini' href='#' ng-click='trashConcern($index)'>
+                <i class='icon-trash'></i>
+              </a>
+            </div>
+            <div class='btn-group'>
+              <a class='btn btn-mini' href='#' ng-click='downVote(concern)'>
+                <i class='icon-minus'></i>
+              </a>
+              <a class='btn btn-mini' href='#' ng-click='upVote(concern)'>
+                <i class='icon-plus'></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </script>
+
   </head>
 
-  <body ng-controller='CrowdtroCtrl'>
+  <body>
+    <div ng-controller='HeaderCtrl' class='navbar navbar-inverse navbar-fixed-top'>
+      <div class='navbar-inner'>
+        <div class='container-fluid'>
+          <a class='brand' href='#'>Crowdtro</a>
+          <p class='navbar-text pull-right'>
+            {{me.first_name}} | <a href='/logout' class='navbar-link'>Logout</a>
+          </p>
+        </div>
+      </div>
+    </div>
 
-    <div ng-repeat='concern in concerns | filter:{complete:false}'>
-      <div ng-hide='editing'>
-        {{concern.content}} @ {{concern.score}}
-        <div class='btn-toolbar'>
-          <div class='btn-group'>
-            <a class='btn btn-mini' href='#/' ng-click='completeConcern(concern)'><i class='icon-ok'></i></a>
-          </div>
-          <div class='btn-group'>
-            <a class='btn btn-mini' href='#/' ng-click='editing = true'><i class='icon-edit'></i></a>
-            <a class='btn btn-mini' href='#/' ng-click='trashConcern($index)'><i class='icon-trash'></i></a>
-          </div>
-          <div class='btn-group'>
-            <a class='btn btn-mini' href='#/' ng-click='downVote(concern)'><i class='icon-minus'></i></a>
-            <a class='btn btn-mini' href='#/' ng-click='upVote(concern)'><i class='icon-plus'></i></a>
-          </div>
+    <div ng-controller='CrowdtroCtrl' class='container-fluid'>
+      <div class='row-fluid'>
+        <div ng-repeat="concern in concerns | filter:{complete:'false'}" class='row-fluid'>
+          <div ng-include="'concern'"> </div>
         </div>
       </div>
 
-      <div ng-show='editing'>
-        <form ng-submit='editing = false'>
-          <textarea ng-model='concern.content'> </textarea>
-          <input type='submit' value='Update' ng-click='updateConcern($index)'>
+      <hr>
+
+      <div>
+        <form>
+          <fieldset>
+            <legend> New Concern </legend>
+            <textarea rows='3' name='content' class='input-xxlarge' ng-model='newConcern.content' ng-keydown='checkSubmit($event, newConcern)'>
+            </textarea>
+          </fieldset>
+          <input type='submit' class='btn' value='Save' ng-click='addConcern(newConcern)'>
         </form>
       </div>
-    </div>
 
-    <hr>
+      <hr>
 
-    <div>
-      <form>
-        <textarea ng-model='newConcern.content'> </textarea>
-        <input type='submit' value='Save' ng-click='addConcern(newConcern)'>
-      </form>
-    </div>
-
-    <hr>
-
-    <div ng-repeat="concern in concerns | filter:{complete:true}">
-      <div>
-        {{concern.content}} @ {{concern.score}}
-        <br/>
-        <div class='btn-toolbar'>
-          <div class='btn-group'>
-            <a class='btn btn-mini' href='#/' ng-click='resurrectConcern(concern)'><i class='icon-ok'></i></a>
-            <a class='btn btn-mini' href='#/' ng-click='trashConcern($index)'><i class='icon-trash'></i></a>
-          </div>
-          <div class='btn-group'>
-            <a class='btn btn-mini' href='#/' ng-click='downVote(concern)'><i class='icon-minus'></i></a>
-            <a class='btn btn-mini' href='#/' ng-click='upVote(concern)'><i class='icon-plus'></i></a>
-          </div>
+      <div class='row-fluid'>
+        <div ng-repeat="concern in concerns | filter:{complete:'true'}">
+          <div ng-include="'concern'"> </div>
         </div>
       </div>
     </div>
-
   </body>
 </html>
