@@ -19,7 +19,7 @@ module.exports = (app) ->
   app.get '/logout',  homes.logout
 
   strategy = passport.authenticate 'google',
-    successRedirect: '/'
+    successRedirect: '/old.html'
     failureRedirect: '/login'
     failureFlash:    true
 
