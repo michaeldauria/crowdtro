@@ -16,6 +16,7 @@
   </head>
 
   <body ng-controller='CrowdtroCtrl'>
+
     <div ng-repeat='concern in concerns | filter:{complete:false}'>
       <div ng-hide='editing'>
         {{concern.content}} @ {{concern.score}}
@@ -33,10 +34,11 @@
           </div>
         </div>
       </div>
+
       <div ng-show='editing'>
         <form ng-submit='editing = false'>
           <textarea ng-model='concern.content'> </textarea>
-          <input type='submit' value='Update'>
+          <input type='submit' value='Update' ng-click='updateConcern($index)'>
         </form>
       </div>
     </div>
@@ -68,5 +70,6 @@
         </div>
       </div>
     </div>
+
   </body>
 </html>

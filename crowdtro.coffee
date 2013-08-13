@@ -10,6 +10,9 @@ app.controller 'CrowdtroCtrl', ($scope, Concern) ->
     concern.$save()
     $scope.concerns.push concern
 
+  $scope.updateConcern = (index) ->
+    $scope.concerns[index].$update()
+
   $scope.completeConcern = (concern) ->
     concern.complete = true
     concern.$update()
