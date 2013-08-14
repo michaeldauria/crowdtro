@@ -3,36 +3,46 @@ app = angular.module('crowdtro', ['ngResource'])
 app.controller 'HeaderCtrl', ($scope, Me) ->
   $scope.me = Me.get()
 
+app.directive 'focusMe', ($timeout) ->
+  #scope: true
+  link: (scope, element, attrs) ->
+    scope.$watch attrs.focusMe, (value) ->
+      if value
+        $timeout ->
+          element[0].focus()
+
 app.controller 'CrowdtroCtrl', ($scope, Concern) ->
-  $scope.newConcern = { content: 'what' }
+  $scope.newConcern = { content: '' }
 
   $scope.concerns = Concern.query()
 
-  $scope.addConcern = (concern) ->
-    concern = new Concern(concern)
-    concern.$save()
-    $scope.concerns.push concern
+  $scope.editConcern = (concern, current) ->
+    $scope.cachedConcern = concern.content
+    current.editing = true
 
-  $scope.updateConcern = (index) ->
-    $scope.concerns[index].$update()
+  $scope.addConcern = ($event, concern) ->
+    if $event.keyCode == 13
+      $event.preventDefault()
+      if concern.content != ''
+        newConcern = new Concern(concern)
+        newConcern.$save()
+        $scope.concerns.push newConcern
+        concern.content = ''
 
-  $scope.completeConcern = (concern) ->
-    concern.complete = "true"
+  $scope.updateConcern = ($event, index, concern, current)->
+    if $event.keyCode in [13, 27]
+      $event.preventDefault()
+      current.editing = false
+
+      if $event.keyCode == 13
+        $scope.concerns[index].$update()
+
+      if $event.keyCode == 27
+        concern.content = $scope.cachedConcern
+
+  $scope.toggleConcern = (concern) ->
+    concern.complete = !concern.complete
     concern.$update()
-
-  $scope.resurrectConcern = (concern) ->
-    concern.complete = "false"
-    concern.$update()
-
-  $scope.checkSubmit = (event, concern, current)->
-    if event.keyCode == 13
-      event.preventDefault()
-      if current
-        concern.$update()
-        current.editing = false
-      else
-        $scope.addConcern(concern)
-        concern.content = ""
 
   $scope.trashConcern = (index) ->
     concern = $scope.concerns.splice(index, 1)
