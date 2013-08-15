@@ -20,7 +20,12 @@
 
         <div class='row-fluid' ng-show='current.editing'>
           <form>
-            <textarea rows='1' name='content' class='input-xxlarge' ng-model='concern.content' ng-keydown='updateConcern($event, $index, concern, current)' focus-me="focusInput" ng-blur='editingBlurred(concern)'>
+            <textarea name='content' class='input-xxlarge'
+              focus-me="focusInput"
+              ng-model='concern.content'
+              ng-keydown='updateConcern($event, $index, concern, current)'
+              ng-blur='editingBlurred(concern, current)'
+              >
             </textarea>
           </form>
         </div>

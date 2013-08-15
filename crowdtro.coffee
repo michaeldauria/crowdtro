@@ -14,6 +14,11 @@ app.directive 'focusMe', ($timeout) ->
           element[0].value = ''
           element[0].value = temp 
 
+app.directive 'ngBlur', ->
+  (scope, elem, attrs) ->
+    elem.bind 'blur', ->
+      scope.$apply attrs.ngBlur
+
 app.controller 'CrowdtroCtrl', ($scope, Concern) ->
   $scope.newConcern = { content: '' }
 
@@ -43,8 +48,7 @@ app.controller 'CrowdtroCtrl', ($scope, Concern) ->
       if $event.keyCode == 27
         concern.content = $scope.cachedConcern
 
-  $scope.editingBlurred = (concern) ->
-    console.log "in here"
+  $scope.editingBlurred = (concern, current) ->
     concern.content = $scope.cachedConcern
     current.editing = false
 
