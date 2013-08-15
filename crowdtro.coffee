@@ -10,6 +10,9 @@ app.directive 'focusMe', ($timeout) ->
       if value
         $timeout ->
           element[0].focus()
+          temp = element[0].value
+          element[0].value = ''
+          element[0].value = temp 
 
 app.controller 'CrowdtroCtrl', ($scope, Concern) ->
   $scope.newConcern = { content: '' }
@@ -39,6 +42,11 @@ app.controller 'CrowdtroCtrl', ($scope, Concern) ->
 
       if $event.keyCode == 27
         concern.content = $scope.cachedConcern
+
+  $scope.editingBlurred = (concern) ->
+    console.log "in here"
+    concern.content = $scope.cachedConcern
+    current.editing = false
 
   $scope.toggleConcern = (concern) ->
     concern.complete = !concern.complete

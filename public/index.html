@@ -5,12 +5,7 @@
     <title>Crowdtro</title>
     <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' type='text/css' charset='utf-8' media='screen'>
     <link rel='stylesheet' href='/stylesheets/bootstrap.responsive.min.css' type='text/css' charset='utf-8' media='screen'>
-
-    <style type='css/text'>
-      .container-fluid .row-fluid:nth-child(even) { {
-          background-color: red;
-      }
-    </style>
+    <link rel='stylesheet' href='/crowdtro.css' type='text/css' charset='utf-8' media='screen'>
 
     <script src='/javascripts/jquery.min.js' type='text/javascript' charset='utf-8'></script>
     <script src='/javascripts/bootstrap.min.js' type='text/javascript' charset='utf-8'></script>
@@ -25,12 +20,12 @@
 
         <div class='row-fluid' ng-show='current.editing'>
           <form>
-            <textarea rows='1' name='content' class='input-xxlarge' ng-model='concern.content' ng-keydown='updateConcern($event, $index, concern, current)'>
+            <textarea rows='1' name='content' class='input-xxlarge' ng-model='concern.content' ng-keydown='updateConcern($event, $index, concern, current)' focus-me="focusInput" ng-blur='editingBlurred(concern)'>
             </textarea>
           </form>
         </div>
 
-        <div class='row-fluid' ng-dblclick='editConcern(concern, current)' ng-hide='current.editing' >
+        <div class='row-fluid' ng-dblclick='editConcern(concern, current); focusInput=true' ng-hide='current.editing'>
           {{concern.score}} / {{concern.content}}
         </div>
 
